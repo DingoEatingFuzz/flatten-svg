@@ -17,6 +17,32 @@ const commandsMap = {
   "z":"Z", "m":"m", "l":"l", "c":"c", "q":"q", "a":"a", "h":"h", "v":"v", "s":"s", "t":"t"
 };
 
+const pointsFrom = (svgEl) => {
+  var pointsStr = svgEl.getAttribute("points");
+
+  if (!pointsStr) return [];
+
+  var split1 = pointsStr.split(' ');
+  var parts = split1.reduce((arr, el) => {
+    return arr.concat(el.split(','));
+  }, [])
+
+  var list = [];
+  for (var i = 0; i < parts.length - 1; i += 2) {
+    list.push({ x: parseFloat(parts[i]), y: parseFloat(parts[i+1])});
+  }
+
+  Object.defineProperty(list, 'numberOfItems', {
+    get: function() { return this.length; }
+  });
+
+  list.getItem = function(idx) {
+    return this[idx];
+  }
+
+  return list;
+}
+
 const Source = function(string) {
   this._string = string;
   this._currentIndex = 0;
@@ -1041,9 +1067,10 @@ const line = function() {
 
 const polyline = function() {
   var pathData = [];
+  var points = this.points || pointsFrom(this);
 
-  for (var i = 0; i < this.points.numberOfItems; i += 1) {
-    var point = this.points.getItem(i);
+  for (var i = 0; i < points.numberOfItems; i += 1) {
+    var point = points.getItem(i);
 
     pathData.push({
       type: (i === 0 ? "M" : "L"),
@@ -1056,9 +1083,10 @@ const polyline = function() {
 
 const polygon = function() {
   var pathData = [];
+  var points = this.points || pointsFrom(this);
 
-  for (var i = 0; i < this.points.numberOfItems; i += 1) {
-    var point = this.points.getItem(i);
+  for (var i = 0; i < points.numberOfItems; i += 1) {
+    var point = points.getItem(i);
 
     pathData.push({
       type: (i === 0 ? "M" : "L"),
