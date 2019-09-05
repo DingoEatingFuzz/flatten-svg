@@ -101,8 +101,7 @@ Source.prototype = {
     }
     else if (cmd === "S" || cmd === "Q") {
       values = [this._parseNumber(), this._parseNumber(), this._parseNumber(), this._parseNumber()];
-    }
-    else if (cmd === "C") {
+    } else if (cmd === "C") {
       values = [
         this._parseNumber(),
         this._parseNumber(),
@@ -111,8 +110,7 @@ Source.prototype = {
         this._parseNumber(),
         this._parseNumber()
       ];
-    }
-    else if (cmd === "A") {
+    } else if (cmd === "A") {
       values = [
         this._parseNumber(),
         this._parseNumber(),
@@ -467,7 +465,7 @@ var arcToCubicCurves = function(x1, y1, x2, y2, r1, r2, angle, largeArcFlag, swe
     var y2old = y2;
 
     if (sweepFlag && f2 > f1) {
-      f2 = f1 + (Math.PI * 120 / 180) * (1);
+      f2 = f1 + (Math.PI * 120 / 180) * 1;
     }
     else {
       f2 = f1 + (Math.PI * 120 / 180) * (-1);
@@ -652,7 +650,9 @@ var absolutizePathData = function(pathData) {
 
       absolutizedPathData.push({
         type: "A",
-        values: [seg.values[0], seg.values[1], seg.values[2], seg.values[3], seg.values[4], x, y]
+        values: [seg.values[0],
+          seg.values[1],
+          seg.values[2], seg.values[3], seg.values[4], x, y]
       });
 
       currentX = x;
